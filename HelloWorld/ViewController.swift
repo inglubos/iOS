@@ -8,14 +8,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    @IBOutlet weak var backgroundImage: UIImageView!
-    @IBOutlet weak var TitleImage: UIImageView!
+class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+    @IBOutlet weak var stateBtn: UIButton!
+    @IBOutlet weak var statePicker: UIPickerView!
     @IBOutlet weak var welcameButton: UIButton!
+    
+    let states = ["Slovensko", "Polsko", "Ukrajina", "Cina", "Malta"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        statePicker.dataSource = self
+        statePicker.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,10 +28,28 @@ class ViewController: UIViewController {
     }
 
     @IBAction func welcomePressed(_ sender: AnyObject) {
-        backgroundImage.isHidden = false
-        TitleImage.isHidden = false
         welcameButton.isHidden = true
     }
 
+    @IBAction func stateBtnClicked(_ sender: AnyObject) {
+        statePicker.isHidden = false
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return states.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return states[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        stateBtn.setTitle(states[row], for: UIControlState.normal)
+        statePicker.isHidden = true
+    }
 }
 
